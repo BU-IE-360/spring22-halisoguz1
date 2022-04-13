@@ -9,4 +9,4 @@
 ###Homework 1
 
 
-[link](https://bu-ie-360.github.io/spring22-halisoguz1/files/homework1.html)
+[link](files/homework1.html)
