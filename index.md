@@ -9,4 +9,4 @@
 ###Homework 1
 
 
-[link](files/homework1.html)
+[link](/files/homework1.html)
