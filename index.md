@@ -7,4 +7,4 @@
 [link](/files/homework1.html)
 
 ###Homework 2 is here: 
-[link](/files/IE360HW2_2018402129.html)
+[link](/files/IE360HW2.html)
