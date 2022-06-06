@@ -1,0 +1,252 @@
+library(data.table)
+
+day = as.character(Sys.Date()-2)   # Latest day of available production data
+pred_day = as.character(Sys.Date()+1)  # Date to be predicted
+
+final_predictions = c(0,0,0,0,0,0)
+
+
+#####MODELFORHOUR6
+hoursix$tempmean2 <- hoursix$TEMP_36.5_33^4*abs(hoursix$TEMP_36.5_33-293.5)
+train = hoursix[(date.x>='2021-02-01') & (date.x < day)]
+test = hoursix[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','CLOUD_LOW_LAYER_36.75_33','DSWRF_36.5_33.5','DSWRF_36.25_33','TEMP_36.75_33.25')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(2,0,3))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR6
+
+
+#####MODELFORHOUR7
+hourseven$tempmean2 <- hourseven$TEMP_36.5_33^2*abs(hourseven$TEMP_36.5_33-279)
+train = hourseven[(date.x>='2021-02-01') & (date.x < day)]
+test = hourseven[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','DSWRF_36.5_33','DSWRF_36.5_33.5','REL_HUMIDITY_36.25_33','TEMP_36.5_33')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(2,0,3))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR7
+
+
+#####MODELFORHOUR8
+houreight$tempmean2 <- houreight$TEMP_36.5_33^4*abs(houreight$TEMP_36.5_33-302)
+train = houreight[(date.x>='2021-02-01') & (date.x < day)]
+test = houreight[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','CLOUD_LOW_LAYER_36.5_33.5','DSWRF_36.25_33','TEMP_36.75_33.25')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(3,0,2))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR8
+
+
+######MODELFORHOUR9
+train = hournine[(date.x>='2021-02-01') & (date.x < day)]
+test = hournine[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','DSWRF_36.75_33','TEMP_36.5_33.5')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(2,0,3))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#####modelforhour9
+
+######hour10
+train = hourten[(date.x>='2021-02-01') & (date.x < day)]
+test = hourten[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','DSWRF_36.25_33.5','TEMP_36.25_33.5','TEMP_36.25_33.25')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = predict(model, test)
+final_predictions = c(final_predictions, prediction)
+####hour10
+
+
+#####MODELFORHOUR11
+houreleven$tempmean2 <- houreleven$TEMP_36.5_33^4*abs(houreleven$TEMP_36.5_33-284)
+train = houreleven[(date.x>='2021-02-01') & (date.x < day)]
+test = houreleven[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','CLOUD_LOW_LAYER_36.5_33.25','DSWRF_36.5_33.5','DSWRF_36.75_33.5','REL_HUMIDITY_36.25_33', 'REL_HUMIDITY_36.75_33.5', 'TEMP_36.25_33.25')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(3,0,2))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR11
+
+
+#####MODELFORHOUR12
+hourtwelve$tempmean2 <- hourtwelve$TEMP_36.75_33.25^2*abs(hourtwelve$TEMP_36.75_33.25-293.0)
+train = hourtwelve[(date.x>='2021-02-01') & (date.x < day)]
+test = hourtwelve[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.5_33.5','DSWRF_36.75_33.5','TEMP_36.75_33','TEMP_36.5_33')
+test = test[, ..column_of_interest]
+target_data = train[, ..column_of_interest]
+model = lm(production~ ., data = target_data)
+prediction = predict(model, test)
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR12
+
+
+
+
+#####MODELFORHOUR13
+hourthirteen$tempmean2 <- hourthirteen$TEMP_36.75_33.25^2*abs(hourthirteen$TEMP_36.75_33.25-293.0)
+train = hourthirteen[(date.x>='2021-02-01') & (date.x < day)]
+test = hourthirteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.5_33.25','TEMP_36.25_33','TEMP_36.75_33.25')
+test = test[, ..column_of_interest]
+target_data = train[, ..column_of_interest]
+model = lm(production~ ., data = target_data)
+prediction = predict(model, test)
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR13
+
+
+#####MODELFORHOUR14
+hourfourteen$tempmean2 <- hourfourteen$TEMP_36.75_33.25^2*abs(hourfourteen$TEMP_36.75_33.25-289.5)
+train = hourfourteen[(date.x>='2021-02-01') & (date.x < day)]
+test = hourfourteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.75_33.25','DSWRF_36.5_33','REL_HUMIDITY_36.75_33.5','TEMP_36.25_33','TEMP_36.75_33.25')
+test = test[, ..column_of_interest]
+target_data = train[, ..column_of_interest]
+model = lm(production~ ., data = target_data)
+prediction = predict(model, test)
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR14
+
+
+####hourfifteeen
+train = hourfifteen[(date.x>='2021-02-01') & (date.x < day)]
+test = hourfifteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','DSWRF_36.75_33.25','DSWRF_36.5_33','REL_HUMIDITY_36.25_33','REL_HUMIDITY_36.5_33.5','TEMP_36.25_33','TEMP_36.5_33.5')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(2,0,3))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+####hourfifteen
+
+
+#####MODELFORHOUR16
+hoursixteen$tempmean2 <- hoursixteen$TEMP_36.5_33^2*abs(hoursixteen$TEMP_36.5_33-288.0)
+train = hoursixteen[(date.x>='2021-02-01') & (date.x < day)]
+test = hoursixteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.5_33.5','REL_HUMIDITY_36.75_33.5','TEMP_36.75_33')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(2,0,3))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR16
+
+
+
+#####MODELFORHOUR17
+hourseventeen$tempmean2 <- hourseventeen$TEMP_36.5_33^4*abs(hourseventeen$TEMP_36.5_33-275)
+train = hourseventeen[(date.x>='2021-02-01') & (date.x < day)]
+test = hourseventeen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('capacity','production','DSWRF_36.5_33','DSWRF_36.25_33.5', 'TEMP_36.25_33.5','TEMP_36.75_33')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR17
+
+
+#####MODELFORHOUR18
+houreighteen$tempmean2 <- houreighteen$TEMP_36.5_33^4*abs(houreighteen$TEMP_36.5_33-302)
+train = houreighteen[(date.x>='2021-02-01') & (date.x < day)]
+test = houreighteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.5_33','DSWRF_36.25_33.5', 'TEMP_36.25_33.5','TEMP_36.75_33')
+train = train[, ..column_of_interest]
+test = test[, ..column_of_interest]
+target_data = train
+model = lm(production~ ., data = target_data)
+prediction = as.numeric(predict(model, test))
+x <- residuals(model)
+arimamodel <- arima(x,order=c(3,0,2))
+arimaprediction = as.numeric(predict(arimamodel,n.ahead=1)$pred)
+prediction = prediction + arimaprediction
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR18
+
+#####MODELFORHOUR19
+hournineteen$tempmean2 <- hournineteen$TEMP_36.75_33.25^2*abs(hournineteen$TEMP_36.75_33.25-289.0)
+train = hournineteen[(date.x>='2021-02-01') & (date.x < day)]
+test = hournineteen[date.x==pred_day]
+columns <- c(15,16,17,22,25)
+column_of_interest  = c('tempmean2','capacity','production','CLOUD_LOW_LAYER_36.25_33.25','CLOUD_LOW_LAYER_36.75_33','DSWRF_36.25_33','DSWRF_36.75_33.5','REL_HUMIDITY_36.5_33.25','REL_HUMIDITY_36.75_33.25','TEMP_36.5_33.5')
+test = test[, ..column_of_interest]
+target_data = train[, ..column_of_interest]
+model = lm(production~ ., data = target_data)
+prediction = predict(model, test)
+final_predictions = c(final_predictions, prediction)
+#######MODELFORHOUR19
+
+
+## EXPORT PREDICTIONS
+
+final_predictions = c(final_predictions, c(0,0,0,0))
+result = paste(unname(final_predictions), collapse=',')
+file_name = paste('daily_prediction_',as.character(pred_day),'.txt', sep='')
+write.table(result, file =file_name, sep = '',
+            row.names = FALSE, col.names = FALSE, quote=FALSE)
+
