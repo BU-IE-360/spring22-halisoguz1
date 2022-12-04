@@ -1,0 +1,20 @@
+####preparing the best arima model
+x <- residuals(model)  # Residuals of the best model found after monte carlo
+# and grid search.
+bestaic <- 4000  # A random large aic value.
+
+for(i in 0:5){
+  for(j in 0:2){
+    for(k in 0:5){
+      arimamodel <- arima(x,order(c(i,j,k)))
+      if(arimamodel$aic<bestaic){
+        bestmodel <- arimamodel
+        bestaic <- arimamodel$aic
+      }
+      else
+        next
+    }
+  }
+}
+arimamodel
+#####
