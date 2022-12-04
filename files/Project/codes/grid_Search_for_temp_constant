@@ -1,0 +1,47 @@
+validate_start = as.Date('2022-04-18')
+validate_end = as.Date('2022-05-17')
+validate_days = as.list(seq(validate_start, validate_end, by='1 day'))
+hourerrors <- rep(0,24)
+sum_errors = 0
+sum_actuals = 0
+str(combined_data)
+k <- seq(230,305,by=0.5) #grid search is done for the abs value equation using values between 230 to 305
+length(k)
+models <- list(1:5) #best 5 models is kept in memory
+wmapes <- c(1:5) #wmapes for the best 5 models is kept in this vector
+for(i in 1:length(k)){
+  predictions=c()
+  real=c()
+  hourfourteen$tempmean2 <- hourfourteen$TEMP_36.75_33.25^2*abs(hourfourteen$TEMP_36.75_33.25-k[i]) #a new column is created
+  for (day in validate_days){
+    train = hourfourteen[(date.x>='2021-02-01') & (date.x < day)]
+    test = hourfourteen[date.x==day]
+    columns <- c(15,16,17,22,25)
+    column_of_interest  = c('tempmean2','capacity','production','DSWRF_36.75_33.25','DSWRF_36.5_33','REL_HUMIDITY_36.75_33.5','TEMP_36.25_33','TEMP_36.75_33.25') #the desired variables from previous grid search is written here
+    train = train[, ..column_of_interest]
+    test = test[, ..column_of_interest]
+    target_data = train
+    model = lm(production~ ., data = target_data)
+    prediction = predict(model, test)
+    real<- c(real,test$production)
+    predictions = c(predictions, prediction)
+  }
+  abserror <- sum(sum(abs(predictions-realvalues)))
+  error <- sum(sum(predictions-realvalues))
+  currentWMAPE <- sum(abs(predictions-realvalues))/sum(realvalues)
+  for(j in 1:5){
+    if(currentWMAPE<wmape[j]){
+      wmape[j] <- currentWMAPE
+      models[[j]] <- model
+      abserrors[j] <- abserror
+      errors[j] <- error
+      wmape[6] <- k[i]
+      break
+    }
+    else
+      next
+  }
+}
+wmape
+wmape[6]  # This is the best value found for the proposed formula.
+summary(models[[1]])
